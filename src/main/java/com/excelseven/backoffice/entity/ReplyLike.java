@@ -23,4 +23,9 @@ public class ReplyLike {
     @ManyToOne
     @JoinColumn(name = "Reply_id")
     private Reply reply;
+
+    public ReplyLike(User user, Reply reply) {
+        this.user = user;
+        this.reply = reply;
+    }
 }
