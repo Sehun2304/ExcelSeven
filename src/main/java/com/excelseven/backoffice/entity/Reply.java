@@ -17,7 +17,6 @@ public class Reply extends TimeStamp{
     @Column(name = "reply_id")
     private Long id;
 
-
     private String content;
 
     @ManyToOne
@@ -27,4 +26,10 @@ public class Reply extends TimeStamp{
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public Reply(String content, User user, Post post) {
+        this.content = content;
+        this.user = user;
+        this.post = post;
+    }
 }
