@@ -1,9 +1,15 @@
 package com.excelseven.backoffice.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-public class PostLikes {
+public class PostLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,4 +24,8 @@ public class PostLikes {
     @JoinColumn(name = "Post_id")
     private Post post;
 
+    public PostLike(User user, Post post) {
+        this.user = user;
+        this.post = post;
+    }
 }

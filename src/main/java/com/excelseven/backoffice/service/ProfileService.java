@@ -1,4 +1,4 @@
 package com.excelseven.backoffice.service;
 
-public class PofileService {
+public class ProfileService {
 }

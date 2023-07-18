@@ -1,9 +1,15 @@
 package com.excelseven.backoffice.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-public class ReplyLikes {
+public class ReplyLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

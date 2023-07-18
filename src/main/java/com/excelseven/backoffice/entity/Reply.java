@@ -2,10 +2,12 @@ package com.excelseven.backoffice.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "Reply")
 public class Reply extends TimeStamp{
