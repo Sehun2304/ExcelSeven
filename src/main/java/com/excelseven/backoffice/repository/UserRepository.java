@@ -3,5 +3,12 @@ package com.excelseven.backoffice.repository;
 import com.excelseven.backoffice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findById(Long id);
+    //Optional은 값이 있을 수 도 없을 수도 있는 상황에 사용
+    //findById는 Jpa를 사용하여 데이터베이스에서 엔티티를 조회하는 메서드
+
 }
