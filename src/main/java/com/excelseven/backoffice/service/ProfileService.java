@@ -32,7 +32,7 @@ public class ProfileService {
     }
 
 
-    public void updateProfile(UserDetailsImpl userDetails, UpdateProfileRequestDto updateProfileRequestDto) {
+    public UserResponseDto updateProfile(UserDetailsImpl userDetails, UpdateProfileRequestDto updateProfileRequestDto) {
 
         User user = findUser(userDetails.getUser().getId());
 
@@ -52,12 +52,16 @@ public class ProfileService {
 
         userRepository.save(user);
 
+        return new UserResponseDto(user);
+
 
 
     }
 
     //비밀번호 변경
-    public void updatePswd(UserDetailsImpl userDetails, UpdatePswdRequestDto updatePswdRequestDto) {
+    public UserResponseDto updatePswd(UserDetailsImpl userDetails, UpdatePswdRequestDto updatePswdRequestDto) {
+        User user = findUser(userDetails.getUser().getId());
+
 
         // 비밀번호 변경을 위한 기존 비밀번호 재확인
         if (!passwordEncoder.matches(updatePswdRequestDto.getPassword(), userDetails.getPassword())) {
@@ -65,10 +69,12 @@ public class ProfileService {
         else {
 
             // 입력한 비밀번호가 기존 비밀번호와 일치하면 새로운 비밀번호로 변경 가능
-            User user = findUser(userDetails.getUser().getId());
+
             user.setPassword(passwordEncoder.encode(updatePswdRequestDto.getNewPassword()));
             userRepository.save(user);
         }
+
+        return new UserResponseDto(user);
     }
 
 }

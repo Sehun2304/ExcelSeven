@@ -33,8 +33,8 @@ public class ProfileController {
 
     public UserResponseDto updateProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestBody UpdateProfileRequestDto updateProfileRequestDto){
 
-        profilerService.updateProfile(userDetails, updateProfileRequestDto);
-        return profilerService.viewProfile(userDetails);
+        return profilerService.updateProfile(userDetails, updateProfileRequestDto);
+
     }
 
     //비밀번호 변경
@@ -43,7 +43,6 @@ public class ProfileController {
 
     public UserResponseDto updatePswd(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UpdatePswdRequestDto updatePswdRequestDto){
 
-        profilerService.updatePswd(userDetails, updatePswdRequestDto);
-        return profilerService.viewProfile(userDetails);
+        return profilerService.updatePswd(userDetails, updatePswdRequestDto);
     }
 }
