@@ -1,11 +1,14 @@
 package com.excelseven.backoffice.service;
 
+import com.excelseven.backoffice.dto.PostRequestDto;
+import com.excelseven.backoffice.dto.PostResponseDto;
 import com.excelseven.backoffice.entity.Post;
 import com.excelseven.backoffice.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -17,34 +20,44 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public List<PostResponseDto> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        return posts.stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
     }
 
-    public Post getPostById(Long postId) {
-        return postRepository.findById(postId)
+    public PostResponseDto getPostById(Long postId) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
+        return mapToResponseDto(post);
     }
 
-    public Post createPost(Post post) {
-        // 게시물 작성 시 인가(Authorization)를 검증하는 로직을 추가해야합니다.
-        // JWT 토큰을 이용한 인가 검증 로직을 구현해야 합니다.
-        return postRepository.save(post);
+    public PostResponseDto createPost(PostRequestDto postRequestDto) {
+        Post post = new Post();
+        post.setTitle(postRequestDto.getTitle());
+        post.setContent(postRequestDto.getContent());
+        Post savedPost = postRepository.save(post);
+        return mapToResponseDto(savedPost);
     }
 
-    public Post updatePost(Long postId, Post post) {
-        // 게시물 수정 시 인가(Authorization)를 검증하는 로직을 추가해야합니다.
-        // JWT 토큰을 이용한 인가 검증 로직을 구현해야 합니다.
+    public PostResponseDto updatePost(Long postId, PostRequestDto postRequestDto) {
         Post existingPost = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
-        existingPost.setTitle(post.getTitle());
-        existingPost.setContent(post.getContent());
-        return postRepository.save(existingPost);
+        existingPost.setTitle(postRequestDto.getTitle());
+        existingPost.setContent(postRequestDto.getContent());
+        Post updatedPost = postRepository.save(existingPost);
+        return mapToResponseDto(updatedPost);
     }
 
     public void deletePost(Long postId) {
-        // 게시물 삭제 시 인가(Authorization)를 검증하는 로직을 추가해야합니다.
-        // JWT 토큰을 이용한 인가 검증 로직을 구현해야 합니다.
         postRepository.deleteById(postId);
+    }
+
+    private PostResponseDto mapToResponseDto(Post post) {
+        PostResponseDto postResponseDto = new PostResponseDto();
+        postResponseDto.setBoardId(post.getId());
+        // 나머지 필드 설정
+        return postResponseDto;
     }
 }
