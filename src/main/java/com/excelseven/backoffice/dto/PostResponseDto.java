@@ -12,7 +12,6 @@ public class PostResponseDto {
     private LocalDateTime modifiedAt;
     private String title;
     private String content;
-    private List<ReplyDto> replyList;
 
     // 생성자, 게터, 세터 등 필요한 코드 추가
 
@@ -32,12 +31,6 @@ public class PostResponseDto {
         private String introduction;
         private String image;
 
-        // 생성자, 게터, 세터 등 필요한 코드 추가
-    }
-
-    // 내부 클래스 ReplyDto
-    public static class ReplyDto {
-        // Reply 정보에 필요한 필드 추가
         // 생성자, 게터, 세터 등 필요한 코드 추가
     }
 }
