@@ -3,17 +3,17 @@ package com.excelseven.backoffice.controller;
 import com.excelseven.backoffice.dto.ReplyRequestDto;
 import com.excelseven.backoffice.entity.User;
 import com.excelseven.backoffice.service.ReplyService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/api")
 public class ReplyController {
     private final ReplyService replyService;
-    public ReplyController(ReplyService replyService) {
-        this.replyService = replyService;
-    }
+
     @ResponseBody
     @PostMapping("/post/reply/{replyId}")   //댓글 작성
     public void createReply(@RequestBody ReplyRequestDto replyRequestDto, User user){    //@AuthenticationPrincipal UserDetailsImpl userDetails

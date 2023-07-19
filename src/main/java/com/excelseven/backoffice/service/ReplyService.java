@@ -8,6 +8,7 @@ import com.excelseven.backoffice.entity.User;
 import com.excelseven.backoffice.repository.PostRepository;
 import com.excelseven.backoffice.repository.ReplyRepository;
 //import com.excelseven.backoffice.security.UserDetailsImpl;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -17,14 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.concurrent.RejectedExecutionException;
 
 @Service
+@AllArgsConstructor
+
 public class ReplyService {
     private final ReplyRepository replyRepository;
     private final PostService postService;
-
-    public ReplyService(ReplyRepository replyRepository, PostService postService) {
-        this.replyRepository = replyRepository;
-        this.postService = postService;
-    }
 
      public ReplyResponseDto createReply(ReplyRequestDto requestDto, User user) {//댓글 생성
         Post post = postService.findPost(requestDto.getPostId());   //PostId로 게시글 찾음
