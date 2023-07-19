@@ -9,10 +9,13 @@ import com.excelseven.backoffice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest
 public class SaveTest {
+
+    PasswordEncoder passwordEncoder;
 
     UserRepository userRepository;
 
@@ -20,18 +23,22 @@ public class SaveTest {
 
     ReplyRepository replyRepository;
     @Autowired
-    public SaveTest(UserRepository userRepository, PostRepository postRepository, ReplyRepository replyRepository) {
+    public SaveTest(PasswordEncoder passwordEncoder, UserRepository userRepository, PostRepository postRepository, ReplyRepository replyRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.replyRepository = replyRepository;
     }
+
+
+
 
     @Test
     @Rollback(value = false)
     void save() {
         User user = new User();
         user.setUsername("kim");
-        user.setPassword("1234");
+        user.setPassword(passwordEncoder.encode("1234"));
         user.setEmail("kim@naver.com");
         user.setIntroduce("안녕하세요 저는 입니다.");
         user.setNickName("엑셀세븐");
