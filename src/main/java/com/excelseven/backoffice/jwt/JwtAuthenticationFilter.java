@@ -34,17 +34,23 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
       try {
          // json 형태의 string을 객체로 변환
+            log.info("request={}", request.toString());
+
             SigninRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), SigninRequestDto.class);
+//            String username = request.getParameter("username");
+//            String password = request.getParameter("password");
 
            // 인증 처리
           return getAuthenticationManager().authenticate(
                   new UsernamePasswordAuthenticationToken(
                           requestDto.getUsername(),
                            requestDto.getPassword(),
+//                          username,
+//                        password,
                         null
                    )
           );
-      } catch (IOException e) {
+      } catch (Exception e) {
          log.error(e.getMessage());
           throw new RuntimeException(e.getMessage());
        }
