@@ -48,7 +48,5 @@ public class SaveTest {
         reply.setUser(user);
         reply.setPost(post);
         replyRepository.save(reply);
-
-
     }
 }
