@@ -28,8 +28,9 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String email;
-
-    private String nickName;
+//
+//    @Column(nullable = false)
+//    private String nickName;
 
 
 
