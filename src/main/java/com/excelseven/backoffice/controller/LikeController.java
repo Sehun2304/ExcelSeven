@@ -3,10 +3,12 @@ package com.excelseven.backoffice.controller;
 import com.excelseven.backoffice.dto.ApiResponseDto;
 import com.excelseven.backoffice.entity.User;
 import com.excelseven.backoffice.repository.UserRepository;
+import com.excelseven.backoffice.security.UserDetailsImpl;
 import com.excelseven.backoffice.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -22,10 +24,10 @@ public class LikeController {
      * @AuthenticationPrincipal 로그인 기능 구현시 적용
      */
     @PostMapping("/post/{postId}/like")
-    public ResponseEntity<ApiResponseDto> likePost(@PathVariable Long postId) {
+    public ResponseEntity<ApiResponseDto> likePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         // User user = userdetil.get()
-        User user = findUser(1L);
-
+//        User user = findUser(1L);
+        User user = userDetails.getUser();
         try {
             likeService.likePost(user, postId);
         } catch (Exception e) {

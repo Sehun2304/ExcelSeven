@@ -7,12 +7,14 @@ import com.excelseven.backoffice.entity.User;
 import com.excelseven.backoffice.repository.UserRepository;
 import com.excelseven.backoffice.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service //서비스 클래스로 선언하면 스프링 컨테이너에 빈으로 등록되어서 다른 컴포넌트에서 @Autowired 등의 방법으로 주입받아서 사용 가능
 @RequiredArgsConstructor //클래스 필드에 생성자를 자동 생성
+@Slf4j
 public class ProfileService {
 
     private final UserRepository userRepository;
@@ -26,7 +28,7 @@ public class ProfileService {
 
     //유저 프로필 조회
     public UserResponseDto viewProfile(UserDetailsImpl userDetails) {
-
+        log.info("aaaa");
         User user = findUser(userDetails.getUser().getId());
         return new UserResponseDto(user);
     }
