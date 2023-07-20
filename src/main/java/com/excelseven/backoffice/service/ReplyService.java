@@ -9,7 +9,6 @@ import com.excelseven.backoffice.repository.PostRepository;
 import com.excelseven.backoffice.repository.ReplyRepository;
 //import com.excelseven.backoffice.security.UserDetailsImpl;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.stereotype.Service;
@@ -31,24 +30,22 @@ public class ReplyService {
         replyRepository.save(reply);
         return new ReplyResponseDto(reply);
     }
-    @Transactional
     public ReplyResponseDto updateReply(Long replyId, ReplyRequestDto requestDto, User user) {
         Reply reply = replyRepository.findById(replyId).orElseThrow();
-        // 요청자가 운영자 이거나 댓글 작성자(post.user) 와 요청자(user) 가 같은지 체크
-//        if (!user.getRole().equals(UserRoleEnum.ADMIN) && !reply.getUser().equals(user)) {
-//            throw new RejectedExecutionException();
-//        }
+//        !user.getRole().equals(UserRoleEnum.ADMIN) (요청자가 운영자인지 체크)
+        if (!reply.getUser().equals(user)) {  //작성자와 같은지 체크
+            throw new RejectedExecutionException("작성자만 수정 가능합니다");
+        }
         reply.setContent(requestDto.getContent());//동일하면 수정댓글을 reply에 넣어줌
-
         return new ReplyResponseDto(reply);
     }
-    public void deleteReply(Long id, User user) {
+    public String deleteReply(Long id, User user) {
         Reply reply = replyRepository.findById(id).orElseThrow();
-
-        // 요청자가 운영자 이거나 댓글 작성자(post.user) 와 요청자(user) 가 같은지 체크
-//        if (!user.getRole().equals(UserRoleEnum.ADMIN) && !reply.getUser().equals(user)) {
-//            throw new RejectedExecutionException();
-//        }
+//        !user.getRole().equals(UserRoleEnum.ADMIN) (요청자가 운영자인지 체크)
+        if (!reply.getUser().equals(user)) {  //작성자와 같은지 체크
+            throw new RejectedExecutionException("작성자만 수정 가능합니다");
+        }
         replyRepository.delete(reply);
+        return "삭제되었습니다.";
     }
 }
