@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
-    Optional<User> findByNickname(String nickname);
+//    Optional<User> findByNickname(String nickname);
     //Optional은 값이 있을 수 도 없을 수도 있는 상황에 사용
     //findById는 Jpa를 사용하여 데이터베이스에서 엔티티를 조회하는 메서드
 
