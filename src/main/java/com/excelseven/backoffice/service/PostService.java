@@ -47,4 +47,9 @@ public class PostService {
         // JWT 토큰을 이용한 인가 검증 로직을 구현해야 합니다.
         postRepository.deleteById(postId);
     }
+
+    public Post findPost(Long postId) { //댓글 생성시 유효 게시글 찾기용
+        return postRepository.findById(postId).orElseThrow(() ->
+                new IllegalArgumentException("해당 게시글은 존재하지 않습니다."));
+    }
 }
