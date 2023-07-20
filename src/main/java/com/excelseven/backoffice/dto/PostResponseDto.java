@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public class PostResponseDto {
-    private Long boardId;
+    private Long postId;
     private int state;
     private UserDto user;
     private LocalDateTime endTime;
@@ -19,15 +19,15 @@ public class PostResponseDto {
 
     // 생성자, 게터, 세터 등 필요한 코드 추가
 
-    public Long getBoardId() {
-        return boardId;
+    public Long getPostId() {
+        return postId;
     }
 
-    public void setBoardId(Long boardId) {
-        this.boardId = boardId;
+    public void setPostId(Long postId) {
+        this.postId = postId;
     }
 
-    // 내부 클래스 UserDto
+    // 사용자 정보를 담는 UserDto 클래스 (내부 클래스)
     public static class UserDto {
         private Long id;
         private String username;
