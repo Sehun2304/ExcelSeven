@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,6 +26,23 @@ public class Config {
     private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter(jwtUtil, userDetailsService);
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil);
+        filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
+        return filter;
+    }
+
+    @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable()); //csrf.disable 사이트간요청위조 보호 적용 해제
 
@@ -35,16 +53,6 @@ public class Config {
 //        http.authorizeHttpRequests(requests -> requests.anyRequest().permitAll()) // 모든 경로 허용
 //                .formLogin(Customizer.withDefaults())
 //                .httpBasic(Customizer.withDefaults());
-
-        @Bean
-        public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-            return configuration.getAuthenticationManager();
-        }
-
-        @Bean
-        public JwtAuthorizationFilter jwtAuthorizationFilter() {
-            return new JwtAuthorizationFilter(jwtUtil, userDetailsService);
-        }
 
 //        return http.build();
 
