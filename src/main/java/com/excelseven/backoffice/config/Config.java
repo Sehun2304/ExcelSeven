@@ -58,7 +58,7 @@ public class Config {
 
             //특정 경로만 허용할 때 위에 내용 주석하고 아래내용 주석풀기
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/hello").authenticated() //특정 경로만 인증하고 싶을 때 authenticated: 인증이란 뜻
+                        .requestMatchers("/..").authenticated() //특정 경로만 인증하고 싶을 때 authenticated: 인증이란 뜻
                         .requestMatchers("/aaa").permitAll()) // 특정 경로만 허용하고 싶을 때
 
                 .httpBasic(Customizer.withDefaults()); //httpBasic 기본인증 방식 기본설정으로 한다.
