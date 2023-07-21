@@ -39,7 +39,7 @@ public class ReplyService {
         replyRepository.save(reply);
         return new ReplyResponseDto(reply);
     }
-    public String deleteReply(Long id, User user) {
+    public void deleteReply(Long id, User user) {
         Reply reply = replyRepository.findById(id).orElseThrow();
         if (!reply.getUser().equals(user)) {  //작성자와 같은지 체크
             throw new RejectedExecutionException("작성자만 수정 가능합니다");
