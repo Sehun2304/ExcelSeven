@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
+@Getter
+@Setter
 public class PostResponseDto {
     private Long postId;
     private int state;

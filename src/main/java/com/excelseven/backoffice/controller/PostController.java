@@ -37,6 +37,7 @@ public class PostController {
     // 게시물 조회
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long postId) {
+        log.info("postId={}", postId);
         PostResponseDto post = postService.getPostById(postId);
         return ResponseEntity.ok(post);
     }

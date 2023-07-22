@@ -6,6 +6,7 @@ import com.excelseven.backoffice.entity.Post;
 import com.excelseven.backoffice.entity.User;
 import com.excelseven.backoffice.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
@@ -22,7 +24,7 @@ public class PostService {
     public List<PostResponseDto> getAllPosts() {
         List<Post> posts = postRepository.findAll();
         return posts.stream()
-                .map(this::mapToResponseDto)
+                .map(this::mapToResponseDto)// map(post -> mapToResponseDto(post))
                 .collect(Collectors.toList());
     }
 
@@ -45,7 +47,8 @@ public class PostService {
     // 특정 게시물 ID로 게시물 정보 수정
     public PostResponseDto updatePost(Long postId, PostRequestDto postRequestDto, User user) {
         Post existingPost = findPost(postId);
-
+        log.info("user={}",user);
+        log.info("existingPost={}", existingPost.getUser());
         if (!existingPost.getUser().equals(user)) {
             throw new RejectedExecutionException("본인이 작성한 글만 수정할 수 있습니다.");
         }
@@ -77,6 +80,8 @@ public class PostService {
     private PostResponseDto mapToResponseDto(Post post) {
         PostResponseDto postResponseDto = new PostResponseDto();
         postResponseDto.setPostId(post.getId());
+        postResponseDto.setTitle(post.getTitle());
+        postResponseDto.setContent(post.getContent());
         // 나머지 필드 설정
         return postResponseDto;
     }

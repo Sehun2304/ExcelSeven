@@ -1,6 +1,7 @@
 package com.excelseven.backoffice.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode
 @Table(name = "user")
 public class User {
 
@@ -28,9 +30,9 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String email;
-//
-//    @Column(nullable = false)
-//    private String nickName;
+
+    @Column(nullable = false)
+    private String nickName;
 
 
 
