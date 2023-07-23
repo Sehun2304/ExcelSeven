@@ -9,8 +9,4 @@ import lombok.NoArgsConstructor;
 public class ReplyRequestDto {
     Long postId;    //게시글 찾기용
     String content;    //댓글 내용
-
-//    public void setContent(String reply){
-//        this.content = content;
-//    }
 }

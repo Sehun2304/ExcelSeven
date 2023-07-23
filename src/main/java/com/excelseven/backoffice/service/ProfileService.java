@@ -7,12 +7,16 @@ import com.excelseven.backoffice.entity.User;
 import com.excelseven.backoffice.repository.UserRepository;
 import com.excelseven.backoffice.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service //서비스 클래스로 선언하면 스프링 컨테이너에 빈으로 등록되어서 다른 컴포넌트에서 @Autowired 등의 방법으로 주입받아서 사용 가능
 @RequiredArgsConstructor //클래스 필드에 생성자를 자동 생성
+@Slf4j
 public class ProfileService {
 
     private final UserRepository userRepository;
@@ -26,13 +30,13 @@ public class ProfileService {
 
     //유저 프로필 조회
     public UserResponseDto viewProfile(UserDetailsImpl userDetails) {
-
+        log.info("aaaa");
         User user = findUser(userDetails.getUser().getId());
         return new UserResponseDto(user);
     }
 
 
-    public void updateProfile(UserDetailsImpl userDetails, UpdateProfileRequestDto updateProfileRequestDto) {
+    public UserResponseDto updateProfile(UserDetailsImpl userDetails, UpdateProfileRequestDto updateProfileRequestDto) {
 
         User user = findUser(userDetails.getUser().getId());
 
@@ -52,23 +56,43 @@ public class ProfileService {
 
         userRepository.save(user);
 
+        return new UserResponseDto(user);
+
 
 
     }
 
     //비밀번호 변경
-    public void updatePswd(UserDetailsImpl userDetails, UpdatePswdRequestDto updatePswdRequestDto) {
+    public UserResponseDto updatePswd(UserDetailsImpl userDetails, UpdatePswdRequestDto updatePswdRequestDto) {
+        User user = findUser(userDetails.getUser().getId());
+
 
         // 비밀번호 변경을 위한 기존 비밀번호 재확인
         if (!passwordEncoder.matches(updatePswdRequestDto.getPassword(), userDetails.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");}
         else {
-
+            //최근 3회 이내 사용한 비밀번호 목록을 가져옴
+            List<String> lastThreePasswords = user.getLastThreePasswords();
             // 입력한 비밀번호가 기존 비밀번호와 일치하면 새로운 비밀번호로 변경 가능
-            User user = findUser(userDetails.getUser().getId());
-            user.setPassword(passwordEncoder.encode(updatePswdRequestDto.getNewPassword()));
+            String newPasswordHash = passwordEncoder.encode(updatePswdRequestDto.getNewPassword());
+            //최근 3번 이내 사용한 비밀번호 목록에 새 비밀번호가 있는지 확인
+            if(lastThreePasswords.contains(newPasswordHash)){
+                throw new IllegalArgumentException("최근 3번 이내 사용한 비밀번호로는 변경할 수 없습니다");
+            }
+
+            //새 비밀번호를 해시에 저장하고 비밀번호 변경 기록을 업데이트
+            lastThreePasswords.add(newPasswordHash);
+            if(lastThreePasswords.size()>3){
+                lastThreePasswords.remove(0);
+            }
+            //저장되어 있는 비밀번호 갯수가 3개가 넘으면 0번째를 삭제
+
+            user.setPassword(newPasswordHash);
+            user.setLastThreePasswords(lastThreePasswords);
             userRepository.save(user);
         }
+
+        return new UserResponseDto(user);
     }
 
 }
