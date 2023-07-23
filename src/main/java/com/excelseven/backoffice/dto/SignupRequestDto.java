@@ -32,7 +32,7 @@ public class SignupRequestDto {
     private String introduce;
 
     @NotBlank
-    //이메일 정규 표현식    
+    //이메일 정규 표현식(exam@exam.com)
     @Pattern(regexp = "^@Pattern(regexp = \"^[A-Za-z0-9_\\\\.\\\\-]+@[A-Za-z0-9\\\\-]+\\\\.[A-Za-z0-9\\\\-]+$\")", message = "이메일 형식에 맞게 입력해주세요.")
     private String email;
 }
