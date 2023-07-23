@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -45,6 +43,11 @@ public class User {
         this.lastThreePasswords = lastThreePasswords;
     }
 
+
+    public User(SignupRequestDto requestDto, String password) {
+        this.username = requestDto.getUsername();
+        this.password = password;
+    }
 //
 //    @Column(nullable = false)
 //    private String nickName;
