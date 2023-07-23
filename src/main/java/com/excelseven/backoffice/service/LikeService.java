@@ -26,25 +26,21 @@ public class LikeService {
     public void likePost(User user, Long postId) {
 
         Post post = findPost(postId);
-        Optional<PostLike> findLikePost = postLikesRepository.findByUserAndPost(user, post);
-        if (findLikePost.isPresent()){
-            PostLike postLike = findLikePost.get();
-            postLike.setLikeStatus(LikeStatus.Like);
-            postLikesRepository.save(postLike);
+
+        if (postLikesRepository.findByUserAndPost(user, post).isPresent()){
+            throw new DuplicateRequestException("이미 좋아요한 게시글입니다.");
         } else {
-            PostLike postLike = new PostLike(user, post, LikeStatus.Like);
+            PostLike postLike = new PostLike(user, post);
             postLikesRepository.save(postLike);
         }
     }
 
-    // 게시글 좋아요 취소
+    // 게시글 좋아요 삭제
     public void deleteLikePost(User user, Long postId) {
         Post post = findPost(postId);
         Optional<PostLike> findLikePost = postLikesRepository.findByUserAndPost(user, post);
         if(findLikePost.isPresent()) {
-            PostLike postLike = findLikePost.get();
-            postLike.setLikeStatus(LikeStatus.Cancel);
-            postLikesRepository.save(postLike);
+            postLikesRepository.delete(findLikePost.get());
         } else {
             throw new IllegalArgumentException("게시글에 취소할 좋아요가 없습니다.");
         }
