@@ -1,9 +1,12 @@
 package com.excelseven.backoffice.entity;
 
+import com.excelseven.backoffice.dto.SignupRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -49,8 +52,4 @@ public class User {
 //
 //    @Column(nullable = false)
 //    private String nickName;
-
-
-
-
 }
