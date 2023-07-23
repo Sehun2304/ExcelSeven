@@ -44,7 +44,7 @@ public class Config {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf((csrf) -> csrf.disable()); //csrf.disable 사이트간요청위조 보호 적용 해제
+        http.csrf((csrf) -> csrf.disable()); //csrf 불가 설정
 
         /**
          *  기본 설정을 사용하지 않고, securityFilterChain 을 재정의함
@@ -56,10 +56,10 @@ public class Config {
 
 //        return http.build();
 
-            //특정 경로만 허용할 때 위에 내용 주석하고 아래내용 주석풀기
+        //특정 경로만 허용할 때 위에 내용 주석하고 아래내용 주석풀기
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/hello","/","/","/").authenticated() //특정 경로만 인증하고 싶을 때 authenticated: 인증이란 뜻
-                        .requestMatchers("/").permitAll()) // 특정 경로만 허용하고 싶을 때
+                        .requestMatchers("/users/**").permitAll() //특정 경로만 허용
+                        .anyRequest().authenticated()) // 어떤 요청이라도 인증
 
                 .httpBasic(Customizer.withDefaults()); //httpBasic 기본인증 방식 기본설정으로 한다.
 
@@ -73,5 +73,4 @@ public class Config {
 
         return http.build();
     }
-
 }
