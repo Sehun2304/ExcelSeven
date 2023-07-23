@@ -2,12 +2,15 @@ package com.excelseven.backoffice.service;
 
 import com.excelseven.backoffice.dto.PostRequestDto;
 import com.excelseven.backoffice.dto.PostResponseDto;
+import com.excelseven.backoffice.dto.ReplyRequestDto;
+import com.excelseven.backoffice.dto.ReplyResponseDto;
 import com.excelseven.backoffice.entity.Post;
+import com.excelseven.backoffice.entity.Reply;
 import com.excelseven.backoffice.entity.User;
 import com.excelseven.backoffice.repository.PostRepository;
+import com.excelseven.backoffice.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +20,10 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PostService {
+public class AdminService {
+
     private final PostRepository postRepository;
+    private final ReplyRepository replyRepository;
 
     // 모든 게시물 정보 조회
     public List<PostResponseDto> getAllPosts() {
@@ -34,24 +39,9 @@ public class PostService {
         return mapToResponseDto(post);
     }
 
-    // 새로운 게시물 생성
-    public PostResponseDto createPost(PostRequestDto postRequestDto, User user) {
-        Post post = new Post();
-        post.setTitle(postRequestDto.getTitle());
-        post.setContent(postRequestDto.getContent());
-        post.setUser(user);
-        Post savedPost = postRepository.save(post);
-        return mapToResponseDto(savedPost);
-    }
-
     // 특정 게시물 ID로 게시물 정보 수정
     public PostResponseDto updatePost(Long postId, PostRequestDto postRequestDto, User user) {
         Post existingPost = findPost(postId);
-        log.info("user={}",user);
-        log.info("existingPost={}", existingPost.getUser());
-        if (!existingPost.getUser().getId().equals(user.getId())) {
-            throw new RejectedExecutionException("본인이 작성한 글만 수정할 수 있습니다.");
-        }
 
         existingPost.setTitle(postRequestDto.getTitle());
         existingPost.setContent(postRequestDto.getContent());
@@ -62,11 +52,6 @@ public class PostService {
     // 특정 게시물 ID로 게시물 삭제
     public void deletePost(Long postId, User user) {
         Post post = findPost(postId);
-
-        if (!post.getUser().getId().equals(user.getId())) {
-            throw new RejectedExecutionException("본인이 작성한 글만 삭제할 수 있습니다.");
-        }
-
         postRepository.delete(post);
     }
 
@@ -89,5 +74,35 @@ public class PostService {
         postResponseDto.setContent(post.getContent());
         // 나머지 필드 설정
         return postResponseDto;
+    }
+
+
+
+    public ReplyResponseDto createReply(ReplyRequestDto requestDto, User user) {//댓글 생성
+        Post post = postRepository.findById(requestDto.getPostId()).get();   //PostId로 게시글 찾음
+        Reply reply = new Reply(requestDto.getContent(), user, post);  //댓글내용,작성자,작성글 담음
+
+        replyRepository.save(reply);
+        return new ReplyResponseDto(reply);
+    }
+    public ReplyResponseDto updateReply(Long replyId, ReplyRequestDto requestDto, User user) {
+        Reply reply = replyRepository.findById(replyId).orElseThrow();
+        if (!reply.getUser().getId().equals(user.getId())) {  //작성자와 같은지 체크
+            throw new RejectedExecutionException("작성자만 수정 가능합니다");
+        }
+        reply.setContent(requestDto.getContent());//동일하면 수정댓글을 reply에 넣어줌
+        replyRepository.save(reply);
+        return new ReplyResponseDto(reply);
+    }
+    public void deleteReply(Long id, User user) {
+        Reply reply = replyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다"));
+        if (!reply.getUser().getId().equals(user.getId())) {  //작성자와 같은지 체크
+            throw new RejectedExecutionException("작성자만 삭제 가능합니다");
+        }
+        replyRepository.delete(reply);
+
+
+        //1 reply.getUser().equals(user) => 그냥 false !를 쓰면 true로 나옴
+        //2 우리가 원하는 것은 정상이면 reply.getUser().equals(user) => 그냥 true !를 쓰면 false로 나옴
     }
 }

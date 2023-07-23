@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -34,9 +35,12 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    private UserRoleEnum role = UserRoleEnum.USER;
+
     @ElementCollection //값 타입 컬렉션을 매핑할 때 사용, 데이터베이스에 별도의 테이블을 생성하지 않고, 엔티티와
     //같은 테이블에 해당 값들이 컬렉션으로 저장
-    private List<String> lastThreePasswords;
+    private List<String> lastThreePasswords = new ArrayList<>();
 
     public List<String> getLastThreePasswords(){
         return lastThreePasswords;
@@ -52,6 +56,7 @@ public class User {
         this.password = password;
         this.introduce = requestDto.getIntroduce();
         this.email = requestDto.getEmail();
+        this.lastThreePasswords.add(password);
     }
 //
 //    @Column(nullable = false)

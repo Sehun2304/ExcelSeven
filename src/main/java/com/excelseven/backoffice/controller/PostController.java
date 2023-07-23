@@ -17,6 +17,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/post")
 public class PostController {
 
     private final PostService postService;
@@ -27,14 +28,14 @@ public class PostController {
     }
 
     // 모든 게시글 조회
-    @GetMapping("/api/posts")
+    @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPosts() {
         List<PostResponseDto> posts = postService.getAllPosts();
         return ResponseEntity.ok(posts);
     }
 
     // 게시글 조회
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/{postId}")
     public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long postId) {
         log.info("postId={}", postId);
         PostResponseDto post = postService.getPostById(postId);
@@ -42,21 +43,21 @@ public class PostController {
     }
 
     // 게시글 작성
-    @PostMapping("/post")
+    @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         PostResponseDto createdPost = postService.createPost(postRequestDto, userDetails.getUser());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
 
     // 게시글 수정
-    @PutMapping("/posts/{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         PostResponseDto updatedPost = postService.updatePost(postId, postRequestDto, userDetails.getUser());
         return ResponseEntity.ok(updatedPost);
     }
 
     // 게시글 삭제
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("/{postId}")
     public ResponseEntity<ApiResponseDto> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         postService.deletePost(postId, userDetails.getUser());
         return ResponseEntity.ok(new ApiResponseDto("게시글 삭제 성공", HttpStatus.OK.value()));

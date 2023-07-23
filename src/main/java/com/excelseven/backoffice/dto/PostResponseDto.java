@@ -11,8 +11,7 @@ import java.util.Objects;
 public class PostResponseDto {
     private Long postId;
     private int state;
-    private UserDto user;
-    private LocalDateTime endTime;
+    private String user;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private String title;

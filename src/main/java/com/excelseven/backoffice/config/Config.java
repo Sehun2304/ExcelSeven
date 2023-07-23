@@ -13,6 +13,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -46,6 +47,10 @@ public class Config {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable()); //csrf.disable 사이트간요청위조 보호 적용 해제
 
+        http.sessionManagement((sessionManagement) ->
+                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
+
         /**
          *  기본 설정을 사용하지 않고, securityFilterChain 을 재정의함
          *  그리고 모든 요청을 대해 허용으로 바꿈
@@ -56,7 +61,7 @@ public class Config {
 
 //        return http.build();
 
-            //특정 경로만 허용할 때 위에 내용 주석하고 아래내용 주석풀기
+        //특정 경로만 허용할 때 위에 내용 주석하고 아래내용 주석풀기
         http.authorizeHttpRequests((requests) -> requests
 
                         .requestMatchers("/users/**").permitAll() //특정 경로만 허용

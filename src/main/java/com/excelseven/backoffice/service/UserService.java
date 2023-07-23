@@ -21,12 +21,10 @@ public class UserService {
     public void signup(SignupRequestDto requestDto) {
 
         String username = requestDto.getUsername();
-//        String nickname = requestDto.getNickname();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
         // 회원 중복 확인
-        userRepository.findByUsername(username)
-                .ifPresent(user -> {
+        userRepository.findByUsername(username).ifPresent(user -> {
                     throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
                 });
 

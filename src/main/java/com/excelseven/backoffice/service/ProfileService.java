@@ -75,9 +75,11 @@ public class ProfileService {
             List<String> lastThreePasswords = user.getLastThreePasswords();
             // 입력한 비밀번호가 기존 비밀번호와 일치하면 새로운 비밀번호로 변경 가능
             String newPasswordHash = passwordEncoder.encode(updatePswdRequestDto.getNewPassword());
-            //최근 3번 이내 사용한 비밀번호 목록에 새 비밀번호가 있는지 확인
-            if(lastThreePasswords.contains(newPasswordHash)){
-                throw new IllegalArgumentException("최근 3번 이내 사용한 비밀번호로는 변경할 수 없습니다");
+            // 입력한 새 비밀번호가 최근 3번 이내 사용한 비밀번호인지 확인
+            for (String hashedPassword : lastThreePasswords) {
+                if (passwordEncoder.matches(updatePswdRequestDto.getNewPassword(), hashedPassword)) {
+                    throw new IllegalArgumentException("최근 3번 이내 사용한 비밀번호로는 변경할 수 없습니다");
+                }
             }
 
             //새 비밀번호를 해시에 저장하고 비밀번호 변경 기록을 업데이트

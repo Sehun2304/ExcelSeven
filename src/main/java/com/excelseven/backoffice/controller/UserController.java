@@ -8,12 +8,17 @@ import com.excelseven.backoffice.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
@@ -25,10 +30,19 @@ public class UserController {
 
     // 회원가입 API
     @PostMapping("/signup")
-    public ApiResponseDto signup(@Valid @RequestBody SignupRequestDto requestDto) {
+    public ApiResponseDto signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
+        log.info("bindingResult={}", bindingResult);
+        if (bindingResult.hasErrors()) {
+        // 에러 정보를 로그로 출력
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                System.err.println(error.getDefaultMessage());
+                return new ApiResponseDto(error.getDefaultMessage(),HttpStatus.BAD_REQUEST.value());
+            }
+        }
+
         try {
             userService.signup(requestDto);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return new ApiResponseDto("중복된 사용자가 존재합니다.", HttpStatus.BAD_REQUEST.value());
         }
         return new ApiResponseDto("회원 가입에 성공하셨습니다.", HttpStatus.OK.value());

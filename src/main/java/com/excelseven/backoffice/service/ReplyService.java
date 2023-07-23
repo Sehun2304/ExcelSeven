@@ -38,7 +38,7 @@ public class ReplyService {
         return new ReplyResponseDto(reply);
     }
     public void deleteReply(Long id, User user) {
-        Reply reply = replyRepository.findById(id).orElseThrow();
+        Reply reply = replyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다"));
         if (!reply.getUser().getId().equals(user.getId())) {  //작성자와 같은지 체크
             throw new RejectedExecutionException("작성자만 삭제 가능합니다");
         }

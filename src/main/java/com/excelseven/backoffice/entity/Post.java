@@ -1,14 +1,12 @@
 package com.excelseven.backoffice.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode
 @Table(name = "Post")
 @EntityListeners(AuditingEntityListener.class) // 날짜 기록을 위해 AuditingEntityListener 등록
 public class Post extends TimeStamp {
@@ -33,8 +32,10 @@ public class Post extends TimeStamp {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
+
+
 
 //    @CreatedDate // 생성일자를 자동으로 기록
 //    private LocalDateTime createdAt;
