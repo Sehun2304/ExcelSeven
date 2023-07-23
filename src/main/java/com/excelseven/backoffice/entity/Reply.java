@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -29,10 +30,12 @@ public class Reply extends TimeStamp{
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @OneToMany(mappedBy = "reply", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ReplyLike> replyLikes = new ArrayList<>();
+
     public Reply(String content, User user, Post post) {
         this.content = content;
         this.user = user;
         this.post = post;
     }
-
 }

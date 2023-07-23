@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProfileController {
 
     private final ProfileService profilerService;
+
     //프로필 메인
     @GetMapping
     //보안상 entity보다 dto를 사용하는게 바람직하기 때문에 dto를 만들어서 활용
@@ -33,6 +34,7 @@ public class ProfileController {
 
 
     //프로필 수정
+
     @PatchMapping("/update")
 
     public UserResponseDto updateProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestBody UpdateProfileRequestDto updateProfileRequestDto){
