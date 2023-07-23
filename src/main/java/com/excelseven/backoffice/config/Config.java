@@ -58,6 +58,7 @@ public class Config {
 
             //특정 경로만 허용할 때 위에 내용 주석하고 아래내용 주석풀기
         http.authorizeHttpRequests((requests) -> requests
+
                         .requestMatchers("/users/**").permitAll() //특정 경로만 허용
                         .anyRequest().authenticated()) // 어떤 요청이라도 인증
 
