@@ -1,10 +1,13 @@
 package com.excelseven.backoffice.entity;
 
+import com.excelseven.backoffice.dto.SignupRequestDto;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Setter
 @Getter
