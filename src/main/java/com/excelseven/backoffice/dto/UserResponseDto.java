@@ -7,15 +7,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserResponseDto {
-    private String email;
     private String username;
     private String introduce;
+    private String email;
 
 
     public UserResponseDto(User users){
-        this.email = users.getEmail();
         this.username = users.getUsername();
         this.introduce = users.getIntroduce();
+        this.email = users.getEmail();
 
     }
 }

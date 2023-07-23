@@ -1,5 +1,6 @@
 package com.excelseven.backoffice.controller;
 
+import com.excelseven.backoffice.dto.ApiResponseDto;
 import com.excelseven.backoffice.dto.UpdateProfileRequestDto;
 import com.excelseven.backoffice.dto.UpdatePswdRequestDto;
 import com.excelseven.backoffice.dto.UserResponseDto;
@@ -49,8 +50,12 @@ public class ProfileController {
 
     @PatchMapping("/pswd")
 
-    public UserResponseDto updatePswd(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UpdatePswdRequestDto updatePswdRequestDto){
-
-        return profilerService.updatePswd(userDetails, updatePswdRequestDto);
+    public ResponseEntity<ApiResponseDto> updatePswd(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UpdatePswdRequestDto updatePswdRequestDto){
+        try {
+            profilerService.updatePswd(userDetails, updatePswdRequestDto);
+        } catch (Exception e) {
+            return ResponseEntity.ok().body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
+        return ResponseEntity.ok().body(new ApiResponseDto("변경 성공", HttpStatus.CREATED.value()));
     }
 }
