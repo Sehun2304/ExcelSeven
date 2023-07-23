@@ -1,9 +1,13 @@
 package com.excelseven.backoffice.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -26,6 +30,9 @@ public class Reply extends TimeStamp{
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @OneToMany(mappedBy = "reply", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ReplyLike> replyLikes = new ArrayList<>();
 
     public Reply(String content, User user, Post post) {
         this.content = content;
