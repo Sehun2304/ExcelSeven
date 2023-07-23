@@ -4,8 +4,6 @@ import com.excelseven.backoffice.dto.ApiResponseDto;
 import com.excelseven.backoffice.dto.UpdateProfileRequestDto;
 import com.excelseven.backoffice.dto.UpdatePswdRequestDto;
 import com.excelseven.backoffice.dto.UserResponseDto;
-import com.excelseven.backoffice.entity.User;
-import com.excelseven.backoffice.repository.UserRepository;
 import com.excelseven.backoffice.security.UserDetailsImpl;
 import com.excelseven.backoffice.service.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
