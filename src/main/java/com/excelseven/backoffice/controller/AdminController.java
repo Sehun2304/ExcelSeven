@@ -24,28 +24,28 @@ public class AdminController {
     private final AdminService adminService;
 
     // 모든 게시글 조회
-    @GetMapping
+    @GetMapping("/post")
     public ResponseEntity<List<PostResponseDto>> getAllPosts() {
         List<PostResponseDto> posts = adminService.getAllPosts();
         return ResponseEntity.ok(posts);
     }
 
     // 게시글 조회
-    @GetMapping("/{postId}")
+    @GetMapping("/post/{postId}")
     public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long postId) {
         PostResponseDto post = adminService.getPostById(postId);
         return ResponseEntity.ok(post);
     }
 
     // 게시글 수정
-    @PutMapping("/{postId}")
+    @PutMapping("/post/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         PostResponseDto updatedPost = adminService.updatePost(postId, postRequestDto, userDetails.getUser());
         return ResponseEntity.ok(updatedPost);
     }
 
     // 게시글 삭제
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/post/{postId}")
     public ResponseEntity<ApiResponseDto> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         adminService.deletePost(postId, userDetails.getUser());
         return ResponseEntity.ok(new ApiResponseDto("게시글 삭제 성공", HttpStatus.OK.value()));
@@ -53,16 +53,16 @@ public class AdminController {
 
 
 
-    @PostMapping("")   //댓글 작성
+    @PostMapping("/reply")   //댓글 작성
     public ReplyResponseDto createReply(@RequestBody ReplyRequestDto replyRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return adminService.createReply(replyRequestDto, userDetails.getUser());
     }
-    @PutMapping("/{replyId}")    //댓글 수정
+    @PutMapping("/reply/{replyId}")    //댓글 수정
     public ReplyResponseDto updateReply(@PathVariable Long replyId, @RequestBody ReplyRequestDto replyRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return adminService.updateReply(replyId, replyRequestDto, userDetails.getUser());
     }
 
-    @DeleteMapping("/{replyId}") //    삭제
+    @DeleteMapping("/reply/{replyId}") //    삭제
     public ResponseEntity<ApiResponseDto> deleteReply(@PathVariable long replyId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         try {
             adminService.deleteReply(replyId, userDetails.getUser());

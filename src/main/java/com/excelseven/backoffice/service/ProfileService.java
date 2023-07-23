@@ -22,8 +22,6 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
-
     private User findUser(Long id){
         return userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("잘못된 사용자입니다."));
     }

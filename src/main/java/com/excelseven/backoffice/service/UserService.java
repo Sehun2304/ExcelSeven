@@ -25,8 +25,8 @@ public class UserService {
 
         // 회원 중복 확인
         userRepository.findByUsername(username).ifPresent(user -> {
-                    throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
-                });
+            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+        });
 
         userRepository.save(new User(requestDto, password));
     }
