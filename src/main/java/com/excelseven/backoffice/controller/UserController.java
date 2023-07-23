@@ -26,7 +26,11 @@ public class UserController {
     // 회원가입 API
     @PostMapping("/signup")
     public ApiResponseDto signup(@Valid @RequestBody SignupRequestDto requestDto) {
-        userService.signup(requestDto);
+        try {
+            userService.signup(requestDto);
+        } catch (Exception e) {
+            return new ApiResponseDto("중복된 사용자가 존재합니다.", HttpStatus.BAD_REQUEST.value());
+        }
         return new ApiResponseDto("회원 가입에 성공하셨습니다.", HttpStatus.OK.value());
     }
 
