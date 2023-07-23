@@ -50,6 +50,8 @@ public class User {
     public User(SignupRequestDto requestDto, String password) {
         this.username = requestDto.getUsername();
         this.password = password;
+        this.introduce = requestDto.getIntroduce();
+        this.email = requestDto.getEmail();
     }
 //
 //    @Column(nullable = false)
