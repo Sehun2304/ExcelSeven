@@ -30,7 +30,6 @@ public class ProfileService {
 
     //유저 프로필 조회
     public UserResponseDto viewProfile(UserDetailsImpl userDetails) {
-        log.info("aaaa");
         User user = findUser(userDetails.getUser().getId());
         return new UserResponseDto(user);
     }
