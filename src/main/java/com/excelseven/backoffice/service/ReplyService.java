@@ -44,7 +44,7 @@ public class ReplyService {
     public String deleteReply(Long id, User user) {
         Reply reply = replyRepository.findById(id).orElseThrow();
 //        !user.getRole().equals(UserRoleEnum.ADMIN) (요청자가 운영자인지 체크)
-        if (!reply.getUser().equals(user)) {  //작성자와 같은지 체크
+        if (!reply.getUser().getId().equals(user.getId())) {  //작성자와 같은지 체크
             throw new RejectedExecutionException("작성자만 수정 가능합니다");
         }
         replyRepository.delete(reply);

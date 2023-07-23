@@ -16,6 +16,10 @@ public class PostLike {
     @Column(name = "PostLikes_id")
     private Long id;
 
+
+    @Enumerated(EnumType.STRING)
+    private LikeStatus likeStatus;
+
     @ManyToOne
     @JoinColumn(name = "User_id")
     private User user;
@@ -24,8 +28,9 @@ public class PostLike {
     @JoinColumn(name = "Post_id")
     private Post post;
 
-    public PostLike(User user, Post post) {
+    public PostLike(User user, Post post, LikeStatus likeStatus) {
         this.user = user;
         this.post = post;
+        this.likeStatus = likeStatus;
     }
 }

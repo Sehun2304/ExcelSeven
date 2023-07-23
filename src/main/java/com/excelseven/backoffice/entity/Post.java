@@ -31,7 +31,4 @@ public class Post extends TimeStamp {
 
     @OneToMany(mappedBy = "post")
     private List<Reply> replies = new ArrayList<>();
-
-
-
 }
