@@ -2,10 +2,10 @@ package com.excelseven.backoffice.controller;
 
 import com.excelseven.backoffice.dto.ApiResponseDto;
 import com.excelseven.backoffice.entity.User;
-import com.excelseven.backoffice.repository.UserRepository;
 import com.excelseven.backoffice.security.UserDetailsImpl;
 import com.excelseven.backoffice.service.LikeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class LikeController {
 
     private final LikeService likeService;
-    private final UserRepository userRepository;
-
 
      // 게시글 좋아요
     @PostMapping("/post/{postId}/like")
@@ -26,7 +24,7 @@ public class LikeController {
         User user = userDetails.getUser();
         try {
             likeService.likePost(user, postId);
-        } catch (Exception e) {
+        } catch (DuplicateKeyException e) {
             return ResponseEntity.badRequest().body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
         ApiResponseDto apiResponseDto = new ApiResponseDto("게시글 좋아요 성공", HttpStatus.ACCEPTED.value());
@@ -42,7 +40,7 @@ public class LikeController {
 
         try {
             likeService.deleteLikePost(user, postId);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
         ApiResponseDto apiResponseDto = new ApiResponseDto("게시글 좋아요 취소 성공", HttpStatus.ACCEPTED.value());
@@ -58,7 +56,7 @@ public class LikeController {
 
         try {
             likeService.likeReply(user, replyId);
-        } catch (Exception e) {
+        } catch (DuplicateKeyException e) {
             return ResponseEntity.badRequest().body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
         ApiResponseDto apiResponseDto = new ApiResponseDto("댓글 좋아요 성공", HttpStatus.ACCEPTED.value());
@@ -72,7 +70,7 @@ public class LikeController {
 
         try {
             likeService.deleteLikeReply(user, replyId);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
         ApiResponseDto apiResponseDto = new ApiResponseDto("댓글 좋아요 삭제 요청", HttpStatus.ACCEPTED.value());

@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @EnableJpaAuditing
-@EnableWebSecurity   // (debug = true)
+@EnableWebSecurity
 @SpringBootApplication
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 애너테이션 활성화
 public class BackofficeApplication {

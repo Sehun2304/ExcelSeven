@@ -22,7 +22,6 @@ repositories {
 }
 
 dependencies {
-//	시큐리티 실행
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

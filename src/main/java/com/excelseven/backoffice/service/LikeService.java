@@ -1,7 +1,10 @@
 package com.excelseven.backoffice.service;
 
 import com.excelseven.backoffice.entity.*;
-import com.excelseven.backoffice.repository.*;
+import com.excelseven.backoffice.repository.PostLikesRepository;
+import com.excelseven.backoffice.repository.PostRepository;
+import com.excelseven.backoffice.repository.ReplyLikesRepository;
+import com.excelseven.backoffice.repository.ReplyRepository;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,9 +27,7 @@ public class LikeService {
 
     // 게시글 좋아요
     public void likePost(User user, Long postId) {
-
         Post post = findPost(postId);
-
         if (postLikesRepository.findByUserAndPost(user, post).isPresent()){
             throw new DuplicateRequestException("이미 좋아요한 게시글입니다.");
         } else {
