@@ -66,7 +66,6 @@ public class PostService {
         if (!post.getUser().getId().equals(user.getId())) {
             throw new RejectedExecutionException("본인이 작성한 글만 삭제할 수 있습니다.");
         }
-
         postRepository.delete(post);
     }
 
@@ -84,7 +83,8 @@ public class PostService {
         postResponseDto.setUser(post.getUser().getUsername());
         postResponseDto.setCreatedAt(post.getCreatedAt());
         postResponseDto.setModifiedAt(post.getModifiedAt());
-
+        postResponseDto.setPostLikes(post.getPostLikes().size());
+        postResponseDto.ChangeReplyResponseDtos(post.getReplies());
         postResponseDto.setTitle(post.getTitle());
         postResponseDto.setContent(post.getContent());
         // 나머지 필드 설정

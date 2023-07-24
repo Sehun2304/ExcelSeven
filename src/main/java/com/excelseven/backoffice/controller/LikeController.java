@@ -19,14 +19,10 @@ public class LikeController {
     private final LikeService likeService;
     private final UserRepository userRepository;
 
-    /**
-     * 게시글 좋아요
-     * @AuthenticationPrincipal 로그인 기능 구현시 적용
-     */
+
+     // 게시글 좋아요
     @PostMapping("/post/{postId}/like")
     public ResponseEntity<ApiResponseDto> likePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
-        // User user = userdetil.get()
-//        User user = findUser(1L);
         User user = userDetails.getUser();
         try {
             likeService.likePost(user, postId);
@@ -37,14 +33,12 @@ public class LikeController {
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
 
-    /**
-     * 게시글 좋아요 삭제
-     * @param postId
-     * @return
-     */
+
+    // 게시글 좋아요 삭제
+
     @DeleteMapping("/post/{postId}/like")
-    public ResponseEntity<ApiResponseDto> DeleteLikePost(@PathVariable Long postId) {
-        User user = findUser(1L);
+    public ResponseEntity<ApiResponseDto> DeleteLikePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+        User user = userDetails.getUser();
 
         try {
             likeService.deleteLikePost(user, postId);
@@ -55,13 +49,12 @@ public class LikeController {
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
 
-    /**
-     * 댓글 좋아요
-     * @AuthenticationPrincipal 로그인 기능 구현시 적용
-     */
+
+     //댓글 좋아요
+
     @PostMapping("/reply/{replyId}/like")
-    public ResponseEntity<ApiResponseDto> likeReply(@PathVariable Long replyId) {
-        User user = findUser(1L);
+    public ResponseEntity<ApiResponseDto> likeReply(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long replyId) {
+        User user = userDetails.getUser();
 
         try {
             likeService.likeReply(user, replyId);
@@ -73,10 +66,9 @@ public class LikeController {
     }
 
     // 댓글 좋아요 삭제 요청
-
     @DeleteMapping("/reply/{replyId}/like")
-    public ResponseEntity<ApiResponseDto> DeleteLikeReply(@PathVariable Long replyId) {
-        User user = findUser(1L);
+    public ResponseEntity<ApiResponseDto> DeleteLikeReply(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long replyId) {
+        User user = userDetails.getUser();
 
         try {
             likeService.deleteLikeReply(user, replyId);
@@ -85,8 +77,5 @@ public class LikeController {
         }
         ApiResponseDto apiResponseDto = new ApiResponseDto("댓글 좋아요 삭제 요청", HttpStatus.ACCEPTED.value());
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
-    }
-    private User findUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 유저 없음"));
     }
 }

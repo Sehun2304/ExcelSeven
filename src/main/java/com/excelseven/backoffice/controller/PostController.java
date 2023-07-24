@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
 
 @Slf4j
 @RestController
@@ -59,7 +60,13 @@ public class PostController {
     // 게시글 삭제
     @DeleteMapping("/{postId}")
     public ResponseEntity<ApiResponseDto> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        postService.deletePost(postId, userDetails.getUser());
+        try {
+            postService.deletePost(postId, userDetails.getUser());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.ok(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        } catch (RejectedExecutionException e) {
+            return ResponseEntity.ok(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
         return ResponseEntity.ok(new ApiResponseDto("게시글 삭제 성공", HttpStatus.OK.value()));
     }
 }

@@ -35,7 +35,6 @@ public class UserController {
         if (bindingResult.hasErrors()) {
         // 에러 정보를 로그로 출력
             for (ObjectError error : bindingResult.getAllErrors()) {
-                System.err.println(error.getDefaultMessage());
                 return new ApiResponseDto(error.getDefaultMessage(),HttpStatus.BAD_REQUEST.value());
             }
         }
@@ -43,7 +42,7 @@ public class UserController {
         try {
             userService.signup(requestDto);
         } catch (IllegalArgumentException e) {
-            return new ApiResponseDto("중복된 사용자가 존재합니다.", HttpStatus.BAD_REQUEST.value());
+            return new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value());
         }
         return new ApiResponseDto("회원 가입에 성공하셨습니다.", HttpStatus.OK.value());
     }

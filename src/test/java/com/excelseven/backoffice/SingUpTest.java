@@ -3,6 +3,7 @@ package com.excelseven.backoffice;
 import com.excelseven.backoffice.entity.Post;
 import com.excelseven.backoffice.entity.Reply;
 import com.excelseven.backoffice.entity.User;
+import com.excelseven.backoffice.entity.UserRoleEnum;
 import com.excelseven.backoffice.repository.PostRepository;
 import com.excelseven.backoffice.repository.ReplyRepository;
 import com.excelseven.backoffice.repository.UserRepository;
@@ -13,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest
-public class SaveTest {
+public class SingUpTest {
 
     UserRepository userRepository;
 
@@ -23,28 +24,29 @@ public class SaveTest {
 
     PasswordEncoder passwordEncoder;
     @Autowired
-    public SaveTest(UserRepository userRepository, PostRepository postRepository, ReplyRepository replyRepository, PasswordEncoder passwordEncoder) {
+    public SingUpTest(UserRepository userRepository, PostRepository postRepository, ReplyRepository replyRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.replyRepository = replyRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    // 관리자용 아이디 테스트
     @Test
     @Rollback(value = false)
     void save() {
         User user = new User();
-        user.setUsername("kim");
-        String password = passwordEncoder.encode("1234");
+        user.setUsername("admin77777");
+        String password = passwordEncoder.encode("admin77777");
         user.setPassword(password);
-        user.setEmail("kim@naver.com");
-        user.setIntroduce("안녕하세요 저는 입니다.");
-//        user.setNickName("엑셀세븐");
+        user.setEmail("adimin77777@naver.com");
+        user.setIntroduce("관리자용 아이디입니다.");
+        user.setRole(UserRoleEnum.ADMIN);
         userRepository.save(user);
 
         Post post = new Post();
-        post.setTitle("개발일지");
-        post.setContent("좋아요 기능 구현 중");
+        post.setTitle("오늘의 공지사항");
+        post.setContent("게시글 규칙을 잘 지켜주세요.");
         post.setUser(user);
         postRepository.save(post);
 

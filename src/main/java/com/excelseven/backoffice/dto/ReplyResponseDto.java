@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class ReplyResponseDto extends ApiResponseDto {
     private String content;
     private String username;
+    private int replyLikes;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -22,5 +23,6 @@ public class ReplyResponseDto extends ApiResponseDto {
         this.username = reply.getUser().getUsername();
         this.createdAt = reply.getCreatedAt();
         this.modifiedAt = reply.getModifiedAt();
+        this.replyLikes = reply.getReplyLikes().size();
     }
 }

@@ -35,11 +35,7 @@ public class Post extends TimeStamp {
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post")
+    private List<PostLike> postLikes = new ArrayList<>();
 
-
-//    @CreatedDate // 생성일자를 자동으로 기록
-//    private LocalDateTime createdAt;
-//
-//    @LastModifiedDate // 수정일자를 자동으로 기록
-//    private LocalDateTime modifiedAt;
 }
